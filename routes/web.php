@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('customers')
+    ->name('customers')
+    ->uses('CustomersController@index');
+
+Route::get('customers/{customer}/edit')
+    ->name('customers.edit')
+    ->uses('CustomersController@edit');
