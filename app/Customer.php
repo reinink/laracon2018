@@ -37,4 +37,17 @@ class Customer extends Model
     {
         $query->orderBy('last_name')->orderBy('first_name');
     }
+
+    public function scopeOrderByField($query, $field)
+    {
+        if ($field === 'name') {
+            $query->orderByName();
+        } elseif ($field === 'company') {
+            $query->orderByCompany();
+        } elseif ($field === 'birthday') {
+            $query->orderByBirthday();
+        } elseif ($field === 'last_interaction') {
+            $query->orderByLastInteractionDate();
+        }
+    }
 }

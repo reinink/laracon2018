@@ -11,7 +11,7 @@ class CustomersController extends Controller
     {
         $customers = Customer::with('company')
             ->withLastInteraction()
-            ->orderByName()
+            ->orderByField($request->get('order', 'name'))
             ->paginate();
 
         return view('customers', ['customers' => $customers]);
