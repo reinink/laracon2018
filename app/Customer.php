@@ -48,6 +48,11 @@ class Customer extends Model
         $query->orderbyRaw("to_char(birth_date, 'MMDD')");
     }
 
+    public function scopeOrderByLastInteractionDate($query)
+    {
+        $query->orderBySubDesc(Interaction::select('created_at')->whereRaw('customers.id = interactions.customer_id')->latest());
+    }
+
     public function scopeOrderByField($query, $field)
     {
         if ($field === 'name') {
