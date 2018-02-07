@@ -40,7 +40,7 @@ class Customer extends Model
 
     public function scopeOrderByCompany($query)
     {
-        $query->join('companies', 'companies.id', '=', 'customers.company_id')->orderBy('companies.name');
+        $query->orderBySub(Company::select('name')->whereRaw('customers.company_id = companies.id'));
     }
 
     public function scopeOrderByField($query, $field)
