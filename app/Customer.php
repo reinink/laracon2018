@@ -43,6 +43,11 @@ class Customer extends Model
         $query->orderBySub(Company::select('name')->whereRaw('customers.company_id = companies.id'));
     }
 
+    public function scopeOrderByBirthday($query)
+    {
+        $query->orderbyRaw("to_char(birth_date, 'MMDD')");
+    }
+
     public function scopeOrderByField($query, $field)
     {
         if ($field === 'name') {
