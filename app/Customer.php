@@ -38,6 +38,11 @@ class Customer extends Model
         $query->orderBy('last_name')->orderBy('first_name');
     }
 
+    public function scopeOrderByCompany($query)
+    {
+        $query->join('companies', 'companies.id', '=', 'customers.company_id')->orderBy('companies.name');
+    }
+
     public function scopeOrderByField($query, $field)
     {
         if ($field === 'name') {
