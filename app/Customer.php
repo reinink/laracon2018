@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
@@ -77,5 +78,28 @@ class Customer extends Model
                    });
             });
         }
+    }
+
+    public function scopeWhereBirthdayThisWeek($query)
+    {
+        $start = Carbon::now()->startOfWeek();
+        $end = Carbon::now()->endOfWeek();
+
+        $dates = collect(new \DatePeriod($start, new \DateInterval('P1D'), $end))->map(function ($date) {
+            return $date->format('md');
+        });
+
+        return $query->whereNotNull('birth_date')->whereIn(\DB::raw("to_char(birth_date, 'MMDD')"), $dates);
+    }
+
+    public function scopeWhereFilters($query, array $filters)
+    {
+        $filters = collect($filters);
+
+        $query->when($filters->get('search'), function ($query, $search) {
+            $query->whereSearch($search);
+        })->when($filters->get('filter') === 'birthday_this_week', function ($query, $filter) {
+            $query->whereBirthdayThisWeek();
+        });
     }
 }
