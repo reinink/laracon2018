@@ -19,4 +19,9 @@ class Customer extends Model
     {
         return $this->hasMany(Interaction::class);
     }
+
+    public function scopeOrderByName($query)
+    {
+        $query->orderBy('last_name')->orderBy('first_name');
+    }
 }
