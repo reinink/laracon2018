@@ -23,13 +23,10 @@ class Customer extends Model
 
     public function scopeWithLastInteractionDate($query)
     {
-        $subQuery = \DB::table('interactions')
-            ->select('created_at')
+        $query->addSubSelect('last_interaction_date', Interaction::select('created_at')
             ->whereRaw('customer_id = customers.id')
             ->latest()
-            ->limit(1);
-
-        return $query->select('customers.*')->selectSub($subQuery, 'last_interaction_date');
+        );
     }
 
     public function scopeOrderByName($query)
