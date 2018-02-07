@@ -29,6 +29,14 @@ class Customer extends Model
         );
     }
 
+    public function scopeWithLastInteractionType($query)
+    {
+        $query->addSubSelect('last_interaction_type', Interaction::select('type')
+            ->whereRaw('customer_id = customers.id')
+            ->latest()
+        );
+    }
+
     public function scopeOrderByName($query)
     {
         $query->orderBy('last_name')->orderBy('first_name');
