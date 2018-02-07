@@ -4,6 +4,14 @@
 
 <h1>Customers <small class="text-muted font-weight-light">({{ number_format($customers->total()) }} found)</small></h1>
 
+<form class="input-group my-4" action="{{ route('customers') }}" method="get">
+    <input type="hidden" name="order" value="{{ request('order') }}">
+    <input type="text" class="w-50 form-control" placeholder="Search..." name="search" value="{{ request('search') }}">
+    <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+
 <table class="table my-4">
     <tr>
         <th><a class="{{ request('order', 'name') === 'name' ? 'text-dark' : '' }}" href="{{ route('customers', ['order' => 'name'] + request()->except('page')) }}">Name</a></th>

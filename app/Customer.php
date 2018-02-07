@@ -65,4 +65,17 @@ class Customer extends Model
             $query->orderByLastInteractionDate();
         }
     }
+
+    public function scopeWhereSearch($query, $search)
+    {
+        foreach (explode(' ', $search) as $term) {
+            $query->where(function ($query) use ($term) {
+                $query->where('first_name', 'ilike', '%'.$term.'%')
+                   ->orWhere('last_name', 'ilike', '%'.$term.'%')
+                   ->orWhereHas('company', function ($query) use ($term) {
+                       $query->where('name', 'ilike', '%'.$term.'%');
+                   });
+            });
+        }
+    }
 }
