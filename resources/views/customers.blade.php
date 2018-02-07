@@ -17,8 +17,8 @@
             <td>{{ $customer->company->name }}</td>
             <td>{{ $customer->birth_date->format('F j') }}</td>
             <td>
-                {{ $customer->last_interaction_date->diffForHumans() }}
-                <span class="text-secondary">({{ $customer->last_interaction_type }})</span>
+                {{ $customer->lastInteraction->created_at->diffForHumans() }}
+                <span class="text-secondary">({{ $customer->lastInteraction->type }})</span>
             </td>
         </tr>
     @endforeach

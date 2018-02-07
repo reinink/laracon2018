@@ -8,7 +8,6 @@ class Customer extends Model
 {
     protected $casts = [
         'birth_date' => 'date',
-        'last_interaction_date' => 'datetime',
     ];
 
     public function company()
@@ -21,20 +20,17 @@ class Customer extends Model
         return $this->hasMany(Interaction::class);
     }
 
-    public function scopeWithLastInteractionDate($query)
+    public function lastInteraction()
     {
-        $query->addSubSelect('last_interaction_date', Interaction::select('created_at')
-            ->whereRaw('customer_id = customers.id')
-            ->latest()
-        );
+        return $this->hasOne(Interaction::class, 'id', 'last_interaction_id');
     }
 
-    public function scopeWithLastInteractionType($query)
+    public function scopeWithLastInteraction($query)
     {
-        $query->addSubSelect('last_interaction_type', Interaction::select('type')
+        $query->addSubSelect('last_interaction_id', Interaction::select('id')
             ->whereRaw('customer_id = customers.id')
             ->latest()
-        );
+        )->with('lastInteraction');
     }
 
     public function scopeOrderByName($query)
